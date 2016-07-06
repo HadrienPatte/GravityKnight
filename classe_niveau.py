@@ -222,7 +222,7 @@ class Niveau:
         "appelle les differentes fonctions du module dans la boucle niveau"
         while self.on:
             if self.menu.mode == 'force':
-                pygame.time.Clock().tick(100)
+                pygame.time.Clock().tick(70)
             else:
                 pygame.time.Clock().tick(70)
             #self.personnage.masquer()

@@ -86,7 +86,7 @@ class Menu:
                 self.mode = 'force'
 
 
-                #On définit les constantes du mode force :
+                #On definit les constantes du mode force :
                 self.gravity = mode_force_gravity
                 self.m = mode_force_m
                 self.dt = mode_force_dt

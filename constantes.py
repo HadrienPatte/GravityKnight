@@ -57,15 +57,15 @@ mode_vitesse_f_fluide = 0.14
 
 ### Constantes liees au mode force
 
-mode_force_gravity = 15
+mode_force_gravity = 35
 mode_force_m = 1
 mode_force_dt = 0.1
 
 
 mode_force_move_force = 60
-mode_force_jump_force = 600
+mode_force_jump_force = 900
 
-mode_force_f_solide = 1
+mode_force_f_solide = 2
 mode_force_f_fluide = 0.1
 
 
@@ -80,8 +80,9 @@ chemin_niveau5 = "niveaux/5"
 chemin_niveau6 = "niveaux/6"
 chemin_niveau7 = "niveaux/7"
 chemin_niveau8 = "niveaux/8"
+chemin_niveau9 = "niveaux/9"
 
-chemins_niveaux = [chemin_niveau1, chemin_niveau2, chemin_niveau3, chemin_niveau4, chemin_niveau5, chemin_niveau6, chemin_niveau7, chemin_niveau8]
+chemins_niveaux = [chemin_niveau1, chemin_niveau2, chemin_niveau3, chemin_niveau4, chemin_niveau5, chemin_niveau6, chemin_niveau7, chemin_niveau8, chemin_niveau9]
 
 
 
@@ -146,7 +147,7 @@ bouton2_pos = (bouton2_gauche, bouton2_haut)
 bouton3_haut = 250
 bouton3_bas = bouton3_haut + taille_bouton[1]
 
-bouton3_gauche =  2 *taille_bouton[0] + 1
+bouton3_gauche =  2 *taille_bouton[0] + 2
 bouton3_droite = bouton3_gauche + taille_bouton[0]
 bouton3_pos = (bouton3_gauche, bouton3_haut)
 """

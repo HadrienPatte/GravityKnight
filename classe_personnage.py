@@ -28,6 +28,7 @@ class Personnage:
         self.width, self.height = self.img_left_gdown[0].get_rect().size
         self.liste_coins = self.generer_liste_coins()
         self.saut_possible = True
+        self.chute_libre = True
         self.compteur_affichages = 0
 
     def generer_images(self):
@@ -119,7 +120,7 @@ class Personnage:
     def contact_bloc(self):
         "LA fonction de contact! repositionne le personnage la ou il faut si il est dans un bloc"
         if self.niveau.menu.mode == "force":
-            self.saut_possible = False
+            self.chute_libre = True
         self.liste_coins = self.generer_liste_coins()
         L=[]
         for i in range(len(self.liste_coins)):
@@ -132,6 +133,7 @@ class Personnage:
             self.Y = [self.y, self.y]
             if self.niveau.gravity == "down":
                 self.saut_possible = True
+                self.chute_libre = False
 
         elif 0 in L and 1 in L:
             self.y = (self.liste_coins[0][1] + 1) * 40 + 0.5
@@ -140,6 +142,7 @@ class Personnage:
             self.Y = [self.y, self.y]
             if self.niveau.gravity == "up":
                 self.saut_possible = True
+                self.chute_libre = False
 
         elif 0 in L and 2 in L:
             self.x = (self.liste_coins[0][0] + 1) * 40 + 0.5
@@ -148,6 +151,7 @@ class Personnage:
             self.X = [self.x, self.x]
             if self.niveau.gravity == "left":
                 self.saut_possible = True
+                self.chute_libre = False
 
         elif 1 in L and 3 in L:
             self.x = self.liste_coins[1][0] * 40 - 0.5 - self.width
@@ -156,6 +160,7 @@ class Personnage:
             self.X = [self.x, self.x]
             if self.niveau.gravity == "right":
                 self.saut_possible = True
+                self.chute_libre = False
 
 
         elif self.niveau.gravity == "down" or self.niveau.gravity == "up":
@@ -165,6 +170,7 @@ class Personnage:
                     self.Vy[0] = 0
                 self.Y = [self.y, self.y]
                 self.saut_possible = True
+                self.chute_libre = False
             elif 0 in L or 1 in L:
                 self.y = (self.liste_coins[0][1] + 1) * 40 + 0.5
                 if self.Vy[0] < 0:
@@ -172,6 +178,7 @@ class Personnage:
                 self.Vy[0] = 0
                 self.Y = [self.y, self.y]
                 self.saut_possible = True
+                self.chute_libre = False
         elif self.niveau.gravity == "left" or self.niveau.gravity == "right":
             if 0 in L or 2 in L:
                 self.x = (self.liste_coins[0][0] + 1) * 40 + 0.5
@@ -180,6 +187,7 @@ class Personnage:
                 self.Vx[0] = 0
                 self.X = [self.x, self.x]
                 self.saut_possible = True
+                self.chute_libre = False
             elif 1 in L or 3 in L:
                 self.x = self.liste_coins[1][0] * 40 - 0.5 - self.width
                 if self.Vx[0] > 0:
@@ -187,6 +195,7 @@ class Personnage:
                 self.Vx[0] = 0
                 self.X = [self.x, self.x]
                 self.saut_possible = True
+                self.chute_libre = False
         else:
             saut_possible = True
 
@@ -244,9 +253,11 @@ class Personnage:
                 if (touches_pressees[K_UP] or touches_pressees[K_SPACE]) and self.niveau.gravity == "down" and self.saut_possible:
                     self.vy_controle = -self.niveau.menu.jump_speed
                     self.saut_possible = False
+                    self.chute_libre = True
                 elif (touches_pressees[K_DOWN] or touches_pressees[K_SPACE]) and self.niveau.gravity == "up" and self.saut_possible:
                     self.vy_controle = self.niveau.menu.jump_speed
                     self.saut_possible = False
+                    self.chute_libre = True
             if event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
                     self.vx_controle = 0
@@ -267,9 +278,11 @@ class Personnage:
                 if (touches_pressees[K_LEFT] or touches_pressees[K_SPACE]) and self.niveau.gravity == "right" and self.saut_possible:
                     self.vx_controle = -self.niveau.menu.jump_speed
                     self.saut_possible = False
+                    self.chute_libre = True
                 elif (touches_pressees[K_RIGHT] or touches_pressees[K_SPACE]) and self.niveau.gravity == "left" and self.saut_possible:
                     self.vx_controle = self.niveau.menu.jump_speed
                     self.saut_possible = False
+                    self.chute_libre = True
             if event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
                     self.vx_controle = 0
@@ -292,9 +305,11 @@ class Personnage:
                 if (touches_pressees[K_UP] or touches_pressees[K_SPACE]) and self.niveau.gravity == "down" and self.saut_possible:
                     self.fy_controle = -self.niveau.jump_force
                     self.saut_possible = False
+                    self.chute_libre = True
                 elif (touches_pressees[K_DOWN] or touches_pressees[K_SPACE]) and self.niveau.gravity == "up" and self.saut_possible:
                     self.fy_controle = self.niveau.jump_force
                     self.saut_possible = False
+                    self.chute_libre = True
             if event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
                     self.fx_controle = 0
@@ -351,7 +366,8 @@ class Personnage:
 
     def update_frottements(self):
         "met a jour les coefficients de frottements selon l etat du personnage (en chute ou au sol)"
-        if self.saut_possible:
+        if not self.chute_libre:
+        #if self.saut_possible:
             self.f = self.niveau.menu.f_solide
 
         else:
