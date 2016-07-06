@@ -25,6 +25,7 @@ class Niveau:
             self.move_force = move_force
 
     def charger_images(self):
+        "charge les differentes images du niveau"
         self.img_background = pygame.image.load(chemin_background).convert_alpha()
         self.img_entree = pygame.image.load(chemin_entree).convert_alpha()
         self.img_sortie = pygame.image.load(chemin_sortie).convert_alpha()
@@ -36,12 +37,14 @@ class Niveau:
         self.generer_images_pics()
 
     def generer_images_pics(self):
+        "genere les images des differentes orientations des pics"
         self.img_pics_down = pygame.image.load(chemin_pics).convert_alpha()
         self.img_pics_right = pygame.transform.rotate(self.img_pics_down, 90)
         self.img_pics_up = pygame.transform.rotate(self.img_pics_down, 180)
         self.img_pics_left = pygame.transform.rotate(self.img_pics_down, 270)
 
     def generer_images_fleches(self):
+        "genere les images des differentes orientations des fleches de gravite"
         self.img_fleche_left = pygame.image.load(chemin_fleche).convert_alpha()
         self.img_fleche_down = pygame.transform.rotate(self.img_fleche_left, 90)
         self.img_fleche_right = pygame.transform.rotate(self.img_fleche_left, 180)
@@ -103,8 +106,8 @@ class Niveau:
                     self.surface.blit(self.img_entree, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
                 if self.matrice[i][j] == "s":
                     self.surface.blit(self.img_sortie, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
-                if self.matrice[i][j] == "k":
-                    self.surface.blit(self.img_key, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
+                #if self.matrice[i][j] == "k":
+                #    self.surface.blit(self.img_key, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
                 if self.matrice[i][j] == "p":
                     if self.matrice[i + 1][j] == "b":
                         self.surface.blit(self.img_pics_down, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
@@ -117,6 +120,7 @@ class Niveau:
         return(self.surface)
 
     def initialiser_porte(self):
+        "si il n y a pas de cle, la porte est deja ouverte"
         if len(self.dict_positions_blocs["k"]) == 0:
             self.door = "open"
         else:
@@ -161,9 +165,12 @@ class Niveau:
             self.door = "open"
 
     def afficher_porte(self):
+        "affiche la porte ouverte si la porte est ouverte"
         if len(self.dict_positions_blocs["s"]) != 0:
             if self.door == "open":
                 pygame.display.get_surface().blit(self.img_sortie_ouverte, self.coordonnees_sortie)
+            else:
+                pygame.display.get_surface().blit(self.img_key, self.definir_coordonnees("k"))
 
     def afficher(self):
         "affiche le niveau et le personnage dans le bon ordre"
@@ -202,10 +209,10 @@ class Niveau:
             self.personnage.update_frottements()
             if mode_force:
                 pass
-                #self.personnage.chute_libre_stricte()
-                self.personnage.chute_libre_regulee()
+                self.personnage.chute_libre_stricte()
+                #self.personnage.chute_libre_regulee()
             self.personnage.PFD()
-            self.personnage.vous_ne_passerez_pas()
+            self.personnage.contact_bloc()
             self.personnage.rebondis()
             self.personnage.update_frottements()
             self.switch_gravity()

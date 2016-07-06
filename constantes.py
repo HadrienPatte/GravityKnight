@@ -1,20 +1,23 @@
-#on definie des constantes
+# Fichier de definition des constantes du jeu
+
 window_width = 1200
 window_height = 680
 
-repeat_wait = 1000 # temps d attente avant de considerer la touche en appui long
-repeat_every = 1 # delai entre chaque action ensuite
+# temps d attente avant de considerer la touche en appui long
+repeat_wait = 1000
+# delai entre chaque action ensuite
+repeat_every = 1
 
-mode_force = False
+
+mode_force = True
 
 if mode_force:
-    gravity = 15
+    gravity = 35
     m = 1
     dt = 0.1
 
-    global move_force
     move_force = 60
-    jump_force = 600
+    jump_force = 900
 
     f_solide = 1
     f_fluide = 0.1

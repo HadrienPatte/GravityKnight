@@ -31,6 +31,7 @@ class Personnage:
         self.compteur_affichages = 0
 
     def generer_images(self):
+        "genere toutes les images du personnage en fonction de sa direction et de la direction de la gravite"
         self.img_left_gdown = [pygame.image.load(chemin_perso0).convert_alpha(), \
                                pygame.image.load(chemin_perso1).convert_alpha(), \
                                pygame.image.load(chemin_perso2).convert_alpha()]
@@ -115,10 +116,11 @@ class Personnage:
                 return(True)
         return(False)
 
-    def vous_ne_passerez_pas(self):
+    def contact_bloc(self):
         "LA fonction de contact! repositionne le personnage la ou il faut si il est dans un bloc"
         self.liste_coins = self.generer_liste_coins()
         L=[]
+        #self.saut_possible = False
         for i in range(len(self.liste_coins)):
             if self.liste_coins[i] in self.niveau.dict_positions_blocs["b"]:
                 L.append(i)
