@@ -21,7 +21,7 @@ class Niveau:
         self.gx = 0
         self.gy = self.menu.gravity
         self.initialiser_porte()
-        if self.menu.mode == 'forces':
+        if self.menu.mode == 'force':
             self.move_force = self.menu.move_force
             self.jump_force = self.menu.jump_force
 
@@ -186,7 +186,7 @@ class Niveau:
         self.personnage.afficher()
 
 
-        if self.menu.mode == 'hard' :
+        if self.menu.mode == 'vies' :
 
 
                 if self.menu.vie == 1 :
@@ -210,7 +210,7 @@ class Niveau:
                     self.menu.on = 0
                 self.on = 0
             else:
-                if self.menu.mode == 'forces':
+                if self.menu.mode == 'force':
                     self.personnage.controler_force(event)
                 else:
                     self.personnage.controler_vitesse(event)
@@ -223,7 +223,7 @@ class Niveau:
             #pygame.display.flip()
             self.boucle_evenement()
             self.personnage.update_frottements()
-            if self.menu.mode == 'forces':
+            if self.menu.mode == 'force':
                 pass
                 self.personnage.chute_libre_stricte()
                 #self.personnage.chute_libre_regulee()

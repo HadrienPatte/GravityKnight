@@ -216,9 +216,9 @@ class Personnage:
         "si le personnage est dans un bloc pics, il meurt"
         if self.est_dans_un_bloc("p"):
             self.niveau.on = 0
-        if self.niveau.menu.mode == 'hard' :
+        if self.niveau.menu.mode == 'vies' :
             if self.est_dans_un_bloc("p"):
-                self.niveau.menu.vie += -1
+                self.niveau.menu.vie -= 1
             if self.niveau.menu.vie == 0:
                 self.niveau.on = 0
                 self.niveau.menu.on = 0
