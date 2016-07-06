@@ -5,18 +5,29 @@ window_height = 680
 repeat_wait = 150 # temps d attente avant de considerer la touche en appui long
 repeat_every = 1 # delai entre chaque action ensuite
 
+mode_force = False
 
-gravity = 1
-m = 1
-dt = 1
+if mode_force:
+    gravity = 15
+    m = 1
+    dt = 0.1
 
-move_speed = 1
-jump_speed = 35
-move_speed = 1
+    global move_force
+    move_force = 60
+    jump_force = 500
 
+    f_solide = 1
+    f_fluide = 0.1
+else:
+    gravity = 1
+    m = 1
+    dt = 1
 
-f_solide = 0.14
-f_fluide = 0.14
+    move_speed = 1
+    jump_speed = 35
+
+    f_solide = 0.14
+    f_fluide = 0.14
 
 
 titre_fenetre = "Gravity Knight"

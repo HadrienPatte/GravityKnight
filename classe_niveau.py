@@ -21,6 +21,8 @@ class Niveau:
         self.gx = 0
         self.gy = gravity
         self.initialiser_porte()
+        if mode_force:
+            self.move_force = move_force
 
     def charger_images(self):
         self.img_background = pygame.image.load(chemin_background).convert_alpha()
@@ -185,7 +187,10 @@ class Niveau:
                     self.menu.on = 0
                 self.on = 0
             else:
-                self.personnage.controler(event)
+                if mode_force:
+                    self.personnage.controler_force(event)
+                else:
+                    self.personnage.controler_vitesse(event)
 
     def boucle_principale(self):
         "appelle les differentes fonctions du module dans la boucle niveau"
@@ -195,6 +200,10 @@ class Niveau:
             #pygame.display.flip()
             self.boucle_evenement()
             self.personnage.update_frottements()
+            if mode_force:
+                pass
+                #self.personnage.chute_libre_stricte()
+                self.personnage.chute_libre_regulee()
             self.personnage.PFD()
             self.personnage.vous_ne_passerez_pas()
             self.personnage.rebondis()
