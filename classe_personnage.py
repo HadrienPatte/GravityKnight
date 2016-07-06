@@ -184,6 +184,8 @@ class Personnage:
                 self.Vx[0] = 0
                 self.X = [self.x, self.x]
                 self.saut_possible = True
+        else:
+            saut_possible = False
 
     def PFD(self):
         "calcule la prochaine position a partir de la position actuelle"

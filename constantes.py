@@ -2,7 +2,7 @@
 window_width = 1200
 window_height = 680
 
-repeat_wait = 150 # temps d attente avant de considerer la touche en appui long
+repeat_wait = 1000 # temps d attente avant de considerer la touche en appui long
 repeat_every = 1 # delai entre chaque action ensuite
 
 mode_force = False
@@ -14,7 +14,7 @@ if mode_force:
 
     global move_force
     move_force = 60
-    jump_force = 500
+    jump_force = 600
 
     f_solide = 1
     f_fluide = 0.1
@@ -35,8 +35,12 @@ titre_fenetre = "Gravity Knight"
 chemin_niveau1 = "niveaux/1"
 chemin_niveau2 = "niveaux/2"
 chemin_niveau3 = "niveaux/3"
+chemin_niveau4 = "niveaux/4"
+chemin_niveau5 = "niveaux/5"
+chemin_niveau6 = "niveaux/6"
+chemin_niveau7 = "niveaux/7"
 
-chemins_niveaux = [chemin_niveau1, chemin_niveau2, chemin_niveau3]
+chemins_niveaux = [chemin_niveau1, chemin_niveau2, chemin_niveau3, chemin_niveau4, chemin_niveau5, chemin_niveau6, chemin_niveau7]
 
 chemin_icone = "images/icone.png"
 chemin_menu = "images/menu.png"
@@ -53,9 +57,9 @@ chemin_sortie_ouverte = "images/sortie_ouverte.png"
 chemin_bloc = "images/bloc.png"
 chemin_bloc1 = "images/bloc1.png"
 chemin_pics = "images/pics.png"
-chemin_chest = "images/chest.png"
+chemin_key = "images/key.png"
 
-liste_blocs = ["b", "e", "s", "u", "d", "l", "r", "c", "p"]
+liste_blocs = ["b", "e", "s", "u", "d", "l", "r", "k", "p"]
 
 
 if __name__ == "__main__":

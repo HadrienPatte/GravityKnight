@@ -31,7 +31,7 @@ class Niveau:
         self.img_sortie_ouverte = pygame.image.load(chemin_sortie_ouverte).convert_alpha()
         self.img_bloc = pygame.image.load(chemin_bloc).convert_alpha()
         self.img_bloc1 = pygame.image.load(chemin_bloc1).convert_alpha()
-        self.img_chest = pygame.image.load(chemin_chest).convert_alpha()
+        self.img_key = pygame.image.load(chemin_key).convert_alpha()
         self.generer_images_fleches()
         self.generer_images_pics()
 
@@ -103,8 +103,8 @@ class Niveau:
                     self.surface.blit(self.img_entree, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
                 if self.matrice[i][j] == "s":
                     self.surface.blit(self.img_sortie, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
-                if self.matrice[i][j] == "c":
-                    self.surface.blit(self.img_chest, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
+                if self.matrice[i][j] == "k":
+                    self.surface.blit(self.img_key, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
                 if self.matrice[i][j] == "p":
                     if self.matrice[i + 1][j] == "b":
                         self.surface.blit(self.img_pics_down, (j * self.taille_bloc[0], i * self.taille_bloc[1]))
@@ -117,7 +117,7 @@ class Niveau:
         return(self.surface)
 
     def initialiser_porte(self):
-        if len(self.dict_positions_blocs["c"]) == 0:
+        if len(self.dict_positions_blocs["k"]) == 0:
             self.door = "open"
         else:
             self.door = "closed"
@@ -157,7 +157,7 @@ class Niveau:
 
     def open_door(self):
         "deverouille la porte si le personnage passe sur un coffre"
-        if self.personnage.est_dans_un_bloc("c"):
+        if self.personnage.est_dans_un_bloc("k"):
             self.door = "open"
 
     def afficher_porte(self):
