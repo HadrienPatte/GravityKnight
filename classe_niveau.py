@@ -9,18 +9,7 @@ class Niveau:
         self.on = 1
         self.menu = menu
         self.matrice = self.generer_matrice(chemin_fichier)
-        self.img_background = pygame.image.load(chemin_background).convert_alpha()
-        self.img_fleche_left = pygame.image.load(chemin_fleche_left).convert_alpha()
-        self.img_fleche_right = pygame.image.load(chemin_fleche_right).convert_alpha()
-        self.img_fleche_up = pygame.image.load(chemin_fleche_up).convert_alpha()
-        self.img_fleche_down = pygame.image.load(chemin_fleche_down).convert_alpha()
-        self.img_entree = pygame.image.load(chemin_entree).convert_alpha()
-        self.img_sortie = pygame.image.load(chemin_sortie).convert_alpha()
-        self.img_sortie_ouverte = pygame.image.load(chemin_sortie_ouverte).convert_alpha()
-        self.img_bloc = pygame.image.load(chemin_bloc).convert_alpha()
-        self.img_bloc1 = pygame.image.load(chemin_bloc1).convert_alpha()
-        self.img_chest = pygame.image.load(chemin_chest).convert_alpha()
-        self.generer_images_pics()
+        self.charger_images()
         self.taille_bloc = self.img_bloc.get_rect().size
         self.surface = self.generer_surface()
         self.premier_affichage = True
@@ -33,11 +22,28 @@ class Niveau:
         self.gy = gravity
         self.initialiser_porte()
 
+    def charger_images(self):
+        self.img_background = pygame.image.load(chemin_background).convert_alpha()
+        self.img_entree = pygame.image.load(chemin_entree).convert_alpha()
+        self.img_sortie = pygame.image.load(chemin_sortie).convert_alpha()
+        self.img_sortie_ouverte = pygame.image.load(chemin_sortie_ouverte).convert_alpha()
+        self.img_bloc = pygame.image.load(chemin_bloc).convert_alpha()
+        self.img_bloc1 = pygame.image.load(chemin_bloc1).convert_alpha()
+        self.img_chest = pygame.image.load(chemin_chest).convert_alpha()
+        self.generer_images_fleches()
+        self.generer_images_pics()
+
     def generer_images_pics(self):
         self.img_pics_down = pygame.image.load(chemin_pics).convert_alpha()
         self.img_pics_right = pygame.transform.rotate(self.img_pics_down, 90)
         self.img_pics_up = pygame.transform.rotate(self.img_pics_down, 180)
         self.img_pics_left = pygame.transform.rotate(self.img_pics_down, 270)
+
+    def generer_images_fleches(self):
+        self.img_fleche_left = pygame.image.load(chemin_fleche).convert_alpha()
+        self.img_fleche_down = pygame.transform.rotate(self.img_fleche_left, 90)
+        self.img_fleche_right = pygame.transform.rotate(self.img_fleche_left, 180)
+        self.img_fleche_up = pygame.transform.rotate(self.img_fleche_left, 270)
 
     def generer_matrice(self, chemin_fichier):
         "genere la matrice du niveau"
@@ -175,6 +181,8 @@ class Niveau:
             if event.type == QUIT:
                 self.on, self.menu.on = 0, 0
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
+                if self.personnage.est_dans_un_bloc("e"):
+                    self.menu.on = 0
                 self.on = 0
             else:
                 self.personnage.controler(event)
@@ -189,10 +197,10 @@ class Niveau:
             self.personnage.update_frottements()
             self.personnage.PFD()
             self.personnage.vous_ne_passerez_pas()
+            self.personnage.rebondis()
             self.personnage.update_frottements()
             self.switch_gravity()
             self.open_door()
-            #self.personnage.rebondis()
             self.afficher()
             self.personnage.die()
             self.win()

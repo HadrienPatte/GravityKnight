@@ -22,24 +22,37 @@ class Personnage:
         self.frottements_y = 0
         self.f = f_solide
         self.direction = "right"
-        self.img_left = pygame.image.load(chemin_perso_left).convert_alpha()
-        self.img_right = pygame.image.load(chemin_perso_right).convert_alpha()
-        self.img_up = pygame.transform.rotate(self.img_right, 90)
-        self.img_down = pygame.transform.rotate(self.img_left, 90)
-        self.width, self.height = self.img_left.get_rect().size
+        self.generer_images()
+        self.width, self.height = self.img_left_gdown[0].get_rect().size
         self.liste_coins = self.generer_liste_coins()
         self.saut_possible = True
-        self.generer_images()
+        self.compteur_affichages = 0
 
     def generer_images(self):
-        self.img_left_gdown = pygame.image.load(chemin_perso_left).convert_alpha()
-        self.img_right_gdown = pygame.image.load(chemin_perso_right).convert_alpha()
-        self.img_left_gright = pygame.transform.rotate(self.img_left_gdown, 90)
-        self.img_right_gright = pygame.transform.rotate(self.img_right_gdown, 90)
-        self.img_left_gup = pygame.transform.rotate(self.img_left_gdown, 180)
-        self.img_right_gup = pygame.transform.rotate(self.img_right_gdown, 180)
-        self.img_left_gleft = pygame.transform.rotate(self.img_left_gdown, 270)
-        self.img_right_gleft = pygame.transform.rotate(self.img_right_gdown, 270)
+        self.img_left_gdown = [pygame.image.load(chemin_perso0).convert_alpha(), \
+                               pygame.image.load(chemin_perso1).convert_alpha(), \
+                               pygame.image.load(chemin_perso2).convert_alpha()]
+        self.img_right_gdown = [pygame.transform.flip(self.img_left_gdown[0], 1, 0), \
+                               pygame.transform.flip(self.img_left_gdown[1], 1, 0), \
+                               pygame.transform.flip(self.img_left_gdown[2], 1, 0)]
+        self.img_left_gright = [pygame.transform.rotate(self.img_left_gdown[0], 90), \
+                               pygame.transform.rotate(self.img_left_gdown[1], 90), \
+                               pygame.transform.rotate(self.img_left_gdown[2], 90)]
+        self.img_right_gright = [pygame.transform.rotate(self.img_right_gdown[0], 90), \
+                               pygame.transform.rotate(self.img_right_gdown[1], 90), \
+                               pygame.transform.rotate(self.img_right_gdown[2], 90)]
+        self.img_left_gup = [pygame.transform.rotate(self.img_left_gdown[0], 180), \
+                               pygame.transform.rotate(self.img_left_gdown[1], 180), \
+                               pygame.transform.rotate(self.img_left_gdown[2], 180)]
+        self.img_right_gup = [pygame.transform.rotate(self.img_right_gdown[0], 180), \
+                               pygame.transform.rotate(self.img_right_gdown[1], 180), \
+                               pygame.transform.rotate(self.img_right_gdown[2], 180)]
+        self.img_left_gleft = [pygame.transform.rotate(self.img_left_gdown[0], 270), \
+                               pygame.transform.rotate(self.img_left_gdown[1], 270), \
+                               pygame.transform.rotate(self.img_left_gdown[2], 270)]
+        self.img_right_gleft = [pygame.transform.rotate(self.img_right_gdown[0], 270), \
+                               pygame.transform.rotate(self.img_right_gdown[1], 270), \
+                               pygame.transform.rotate(self.img_right_gdown[2], 270)]
 
     def masquer(self):
         "masque le personnage"
@@ -47,26 +60,33 @@ class Personnage:
 
     def afficher(self):
         "affiche le personnage"
+        # le temps d affichage de chaque etat du personnage est proportionnel a la vitesse
+        if self.niveau.gravity in ("up", "down"):
+            self.compteur_affichages += 0.03 * self.Vx[0]
+        else:
+            self.compteur_affichages += 0.03 * self.Vy[0]
+
+        i = int(self.compteur_affichages % 3)
         if self.niveau.gravity == "down":
             if self.direction == "left":
-                pygame.display.get_surface().blit(self.img_left_gdown, (self.x, self.y))
+                pygame.display.get_surface().blit(self.img_left_gdown[i], (self.x, self.y))
             else:
-                pygame.display.get_surface().blit(self.img_right_gdown, (self.x, self.y))
+                pygame.display.get_surface().blit(self.img_right_gdown[i], (self.x, self.y))
         elif self.niveau.gravity == "up":
             if self.direction == "left":
-                pygame.display.get_surface().blit(self.img_right_gup, (self.x, self.y))
+                pygame.display.get_surface().blit(self.img_right_gup[i], (self.x, self.y))
             else:
-                pygame.display.get_surface().blit(self.img_left_gup, (self.x, self.y))
+                pygame.display.get_surface().blit(self.img_left_gup[i], (self.x, self.y))
         elif self.niveau.gravity == "left":
             if self.direction == "up":
-                pygame.display.get_surface().blit(self.img_left_gleft, (self.x, self.y))
+                pygame.display.get_surface().blit(self.img_left_gleft[i], (self.x, self.y))
             else:
-                pygame.display.get_surface().blit(self.img_right_gleft, (self.x, self.y))
+                pygame.display.get_surface().blit(self.img_right_gleft[i], (self.x, self.y))
         else:
             if self.direction == "up":
-                pygame.display.get_surface().blit(self.img_right_gright, (self.x, self.y))
+                pygame.display.get_surface().blit(self.img_right_gright[i], (self.x, self.y))
             else:
-                pygame.display.get_surface().blit(self.img_left_gright, (self.x, self.y))
+                pygame.display.get_surface().blit(self.img_left_gright[i], (self.x, self.y))
 
         """
         if self.direction == "left":
@@ -256,23 +276,23 @@ class Personnage:
         if self.x < 0:
             self.x = 0
             if self.Vx[0] < 0:
-                self.Vx[0] = 0
-            #self.Vx[0] =- 0.88 * self.Vx[0]
+                #self.Vx[0] = 0
+                self.Vx[0] =- 0.88 * self.Vx[0]
         if self.x > window_width - self.width:
             self.x = window_width - self.width
             if self.Vx[0] > 0:
-                self.Vx[0] = 0
-            #self.Vx[0] =- 0.88 * self.Vx[0]
+                #self.Vx[0] = 0
+                self.Vx[0] =- 0.88 * self.Vx[0]
         if self.y < 0:
             self.y = 0
             if self.Vy[0] < 0:
-                self.Vy[0] = 0
-            #self.Vy[0] =- 0.88 * self.Vy[0]
+                #self.Vy[0] = 0
+                self.Vy[0] =- 0.88 * self.Vy[0]
         if self.y > window_height - self.height:
             self.y = window_height - self.height
             if self.Vy[0] > 0:
-                self.Vy[0] = 0
-            #self.Vy[0] =- 0.88 * self.Vy[0]
+                #self.Vy[0] = 0
+                self.Vy[0] =- 0.88 * self.Vy[0]
 
     def update_frottements(self):
         "met a jour les coefficients de frottements selon l etat du personnage (en chute ou au sol)"
@@ -284,6 +304,7 @@ class Personnage:
             self.f = f_fluide
 
     def gravity_switch_offset(self):
+        "effectue des reglages suite a un changement de gravite"
         """
         self.x -= (self.height - self.width) / 2
         self.X[0] -= (self.height - self.width) / 2
@@ -293,7 +314,7 @@ class Personnage:
         self.Y[1] += (self.height - self.width) / 2
         """
         self.height, self.width = self.width, self.height
-        #print('switching offset')
+
 
 
 if __name__ == "__main__":

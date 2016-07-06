@@ -9,7 +9,8 @@ class Menu:
         self.initialiser_pygame()
         self.initialiser_fenetre()
         self.img = pygame.image.load(chemin_menu).convert_alpha()
-        self.next_niveau = -1
+        self.next_niveau = 1
+        self.premier_lancement = True
 
     def initialiser_pygame(self):
         "initialise pygame"
@@ -29,16 +30,16 @@ class Menu:
 
     def creer_niveau(self):
         "instancie un niveau"
-        self.niveau = Niveau(self, chemins_niveaux[self.next_niveau])
+        self.niveau = Niveau(self, chemins_niveaux[self.next_niveau - 1])
 
     def boucle_evenement(self):
         "traite les actions du joueur"
-        self.next_niveau = 0
         for event in pygame.event.get():
             if event.type == QUIT or event.type == KEYDOWN and event.key == K_ESCAPE:
                 self.on = 0
                 #on quitte le jeu
-            elif event.type == KEYDOWN and event.key == K_SPACE:
+            elif event.type == KEYDOWN and (event.key == K_SPACE or event.key == K_RETURN):
+                self.premier_lancement = False
                 self.creer_niveau()
                 self.niveau.afficher()
                 self.niveau.boucle_principale()
@@ -47,12 +48,12 @@ class Menu:
         "boucle globale du menu"
         self.afficher()
         while self.on:
-            if self.next_niveau != -1:
+            if self.next_niveau == 1 and self.premier_lancement:
+                self.boucle_evenement()
+            else:
                 self.creer_niveau()
                 self.niveau.afficher()
                 self.niveau.boucle_principale()
-            else:
-                self.boucle_evenement()
 
 
 if __name__ == "__main__":

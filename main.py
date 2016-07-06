@@ -4,7 +4,7 @@
 """
 Gravity Knight
 
-Jouez avec la gravite pour parcourir les differentes salles du donjon !
+=> consultez README.txt pour les infos pratiques sur le jeu
 
 jeu realise par :
 * Florent Cheneau
