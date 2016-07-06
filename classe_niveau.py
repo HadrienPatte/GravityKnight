@@ -19,13 +19,15 @@ class Niveau:
         self.personnage = Personnage(self)
         self.gravity = "down"
         self.gx = 0
-        self.gy = gravity
+        self.gy = self.menu.gravity
         self.initialiser_porte()
-        if mode_force:
-            self.move_force = move_force
+        if self.menu.mode == 'forces':
+            self.move_force = self.menu.move_force
+            self.jump_force = self.menu.jump_force
 
     def charger_images(self):
         "charge les differentes images du niveau"
+        self.img_coeur = pygame.image.load(coeur).convert_alpha()
         self.img_background = pygame.image.load(chemin_background).convert_alpha()
         self.img_entree = pygame.image.load(chemin_entree).convert_alpha()
         self.img_sortie = pygame.image.load(chemin_sortie).convert_alpha()
@@ -138,25 +140,25 @@ class Niveau:
             if self.gravity in ("left", "right"):
                 self.personnage.gravity_switch_offset()
             self.gravity = "up"
-            self.gy = -gravity
+            self.gy = -self.menu.gravity
             self.gx = 0
         if self.personnage.est_dans_un_bloc("d"):
             if self.gravity in ("left", "right"):
                 self.personnage.gravity_switch_offset()
             self.gravity = "down"
-            self.gy = gravity
+            self.gy = self.menu.gravity
             self.gx = 0
         if self.personnage.est_dans_un_bloc("l"):
             if self.gravity in ("up", "down"):
                 self.personnage.gravity_switch_offset()
             self.gravity = "left"
-            self.gx = -gravity
+            self.gx = -self.menu.gravity
             self.gy = 0
         if self.personnage.est_dans_un_bloc("r"):
             if self.gravity in ("up", "down"):
                 self.personnage.gravity_switch_offset()
             self.gravity = "right"
-            self.gx = gravity
+            self.gx = self.menu.gravity
             self.gy = 0
 
     def open_door(self):
@@ -182,6 +184,20 @@ class Niveau:
             self.personnage.masquer()
             self.afficher_porte()
         self.personnage.afficher()
+
+
+        if self.menu.mode == 'hard' :
+
+
+                if self.menu.vie == 1 :
+                    self.surface.blit(self.img_coeur, pos_coeur1)
+                if self.menu.vie == 2 :
+                    self.surface.blit(self.img_coeur, pos_coeur1)
+                    self.surface.blit(self.img_coeur, pos_coeur2)
+                if self.menu.vie == 3 :
+                    self.surface.blit(self.img_coeur, pos_coeur1)
+                    self.surface.blit(self.img_coeur, pos_coeur2)
+                    self.surface.blit(self.img_coeur, pos_coeur3)
         pygame.display.flip()
 
     def boucle_evenement(self):
@@ -194,7 +210,7 @@ class Niveau:
                     self.menu.on = 0
                 self.on = 0
             else:
-                if mode_force:
+                if self.menu.mode == 'forces':
                     self.personnage.controler_force(event)
                 else:
                     self.personnage.controler_vitesse(event)
@@ -207,7 +223,7 @@ class Niveau:
             #pygame.display.flip()
             self.boucle_evenement()
             self.personnage.update_frottements()
-            if mode_force:
+            if self.menu.mode == 'forces':
                 pass
                 self.personnage.chute_libre_stricte()
                 #self.personnage.chute_libre_regulee()

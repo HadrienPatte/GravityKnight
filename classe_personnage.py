@@ -22,7 +22,7 @@ class Personnage:
         self.ay = 0
         self.frottements_x = 0
         self.frottements_y = 0
-        self.f = f_solide
+        self.f = self.niveau.menu.f_solide
         self.direction = "right"
         self.generer_images()
         self.width, self.height = self.img_left_gdown[0].get_rect().size
@@ -120,7 +120,6 @@ class Personnage:
         "LA fonction de contact! repositionne le personnage la ou il faut si il est dans un bloc"
         self.liste_coins = self.generer_liste_coins()
         L=[]
-        #self.saut_possible = False
         for i in range(len(self.liste_coins)):
             if self.liste_coins[i] in self.niveau.dict_positions_blocs["b"]:
                 L.append(i)
@@ -187,13 +186,13 @@ class Personnage:
                 self.X = [self.x, self.x]
                 self.saut_possible = True
         else:
-            saut_possible = False
+            saut_possible = True
 
     def PFD(self):
         "calcule la prochaine position a partir de la position actuelle"
-        self.ax = self.niveau.gx + (self.frottements_x + self.fx_controle) / m
-        self.Vx[1] = self.ax * dt + self.Vx[0] + self.vx_controle
-        self.X[1] = 0.5 * self.ax * dt ** 2 + self.Vx[0] * dt + self.X[0]
+        self.ax = self.niveau.gx + (self.frottements_x + self.fx_controle) / self.niveau.menu.m
+        self.Vx[1] = self.ax * self.niveau.menu.dt + self.Vx[0] + self.vx_controle
+        self.X[1] = 0.5 * self.ax * self.niveau.menu.dt ** 2 + self.Vx[0] * self.niveau.menu.dt + self.X[0]
         self.Vx[0], self.Vx[1] = self.Vx[1], self.Vx[0]
         self.X[0], self.X[1] = self.X[1], self.X[0]
         self.x = self.X[0]
@@ -201,9 +200,9 @@ class Personnage:
         if self.niveau.gravity in ("left", "right"):
             self.fx_controle, self.vx_controle = 0, 0
 
-        self.ay = self.niveau.gy + (self.frottements_y + self.fy_controle) / m
-        self.Vy[1] = self.ay * dt + self.Vy[0] + self.vy_controle
-        self.Y[1] = 0.5 * self.ay * dt ** 2 + self.Vy[0] * dt + self.Y[0]
+        self.ay = self.niveau.gy + (self.frottements_y + self.fy_controle) / self.niveau.menu.m
+        self.Vy[1] = self.ay * self.niveau.menu.dt + self.Vy[0] + self.vy_controle
+        self.Y[1] = 0.5 * self.ay * self.niveau.menu.dt ** 2 + self.Vy[0] * self.niveau.menu.dt + self.Y[0]
         self.Vy[0], self.Vy[1] = self.Vy[1], self.Vy[0]
         self.Y[0], self.Y[1] = self.Y[1], self.Y[0]
         self.y = self.Y[0]
@@ -217,6 +216,12 @@ class Personnage:
         "si le personnage est dans un bloc pics, il meurt"
         if self.est_dans_un_bloc("p"):
             self.niveau.on = 0
+        if self.niveau.menu.mode == 'hard' :
+            if self.est_dans_un_bloc("p"):
+                self.niveau.menu.vie += -1
+            if self.niveau.menu.vie == 0:
+                self.niveau.on = 0
+                self.niveau.menu.on = 0
 
     def controler_vitesse(self, event):
         "gere le controle manuel du personnage a l aide des touches de direction"
@@ -224,18 +229,18 @@ class Personnage:
             if event.type == KEYDOWN:
                 touches_pressees = pygame.key.get_pressed()
                 if touches_pressees[K_LEFT]:
-                    self.vx_controle = -move_speed
+                    self.vx_controle = -self.niveau.menu.move_speed
                     self.direction = "left"
                 elif touches_pressees[K_RIGHT]:
-                    self.vx_controle = move_speed
+                    self.vx_controle = self.niveau.menu.move_speed
                     self.direction = "right"
                 else:
                     self.vx_controle = 0
                 if (touches_pressees[K_UP] or touches_pressees[K_SPACE]) and self.niveau.gravity == "down" and self.saut_possible:
-                    self.vy_controle = -jump_speed
+                    self.vy_controle = -self.niveau.menu.jump_speed
                     self.saut_possible = False
                 elif (touches_pressees[K_DOWN] or touches_pressees[K_SPACE]) and self.niveau.gravity == "up" and self.saut_possible:
-                    self.vy_controle = jump_speed
+                    self.vy_controle = self.niveau.menu.jump_speed
                     self.saut_possible = False
             if event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
@@ -247,18 +252,18 @@ class Personnage:
             if event.type == KEYDOWN:
                 touches_pressees = pygame.key.get_pressed()
                 if touches_pressees[K_UP]:
-                    self.vy_controle = -move_speed
+                    self.vy_controle = -self.niveau.menu.move_speed
                     self.direction = "up"
                 elif touches_pressees[K_DOWN]:
-                    self.vy_controle = move_speed
+                    self.vy_controle = self.niveau.menu.move_speed
                     self.direction = "down"
                 else:
                     self.vy_controle = 0
                 if (touches_pressees[K_LEFT] or touches_pressees[K_SPACE]) and self.niveau.gravity == "right" and self.saut_possible:
-                    self.vx_controle = -jump_speed
+                    self.vx_controle = -self.niveau.menu.jump_speed
                     self.saut_possible = False
                 elif (touches_pressees[K_RIGHT] or touches_pressees[K_SPACE]) and self.niveau.gravity == "left" and self.saut_possible:
-                    self.vx_controle = jump_speed
+                    self.vx_controle = self.niveau.menu.jump_speed
                     self.saut_possible = False
             if event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
@@ -280,10 +285,10 @@ class Personnage:
                 else:
                     self.fx_controle = 0
                 if (touches_pressees[K_UP] or touches_pressees[K_SPACE]) and self.niveau.gravity == "down" and self.saut_possible:
-                    self.fy_controle = -jump_force
+                    self.fy_controle = -self.niveau.jump_force
                     self.saut_possible = False
                 elif (touches_pressees[K_DOWN] or touches_pressees[K_SPACE]) and self.niveau.gravity == "up" and self.saut_possible:
-                    self.fy_controle = jump_force
+                    self.fy_controle = self.niveau.jump_force
                     self.saut_possible = False
             if event.type == KEYUP:
                 if event.key == K_LEFT or event.key == K_RIGHT:
@@ -303,11 +308,11 @@ class Personnage:
                 else:
                     self.fy_controle = 0
                 if (touches_pressees[K_LEFT] or touches_pressees[K_SPACE]) and self.niveau.gravity == "right" and self.saut_possible:
-                    self.fx_controle = -jump_force
+                    self.fx_controle = -self.niveau.jump_force
                     self.saut_possible = False
                     self.chute_libre = True
                 elif (touches_pressees[K_RIGHT] or touches_pressees[K_SPACE]) and self.niveau.gravity == "left" and self.saut_possible:
-                    self.fx_controle = jump_force
+                    self.fx_controle = self.niveau.jump_force
                     self.saut_possible = False
                     self.chute_libre = True
             if event.type == KEYUP:
@@ -342,11 +347,10 @@ class Personnage:
     def update_frottements(self):
         "met a jour les coefficients de frottements selon l etat du personnage (en chute ou au sol)"
         if self.saut_possible:
-            self.f = f_solide
-            self.f = f_solide
+            self.f = self.niveau.menu.f_solide
+
         else:
-            self.f = f_fluide
-            self.f = f_fluide
+            self.f = self.niveau.menu.f_fluide
 
     def gravity_switch_offset(self):
         "effectue des reglages suite a un changement de gravite"
@@ -362,16 +366,16 @@ class Personnage:
 
     def chute_libre_stricte(self):
         """bloque les touches si le perso chute pour faire comme de vrai, fonction a ne pas appeller si on veut un jeu moins realiste mais plus jouable"""   #####################
-        if not self.saut_possible and self.fx_controle != jump_force and self.fx_controle != -jump_force and self.fy_controle != jump_force and self.fy_controle != -jump_force:
+        if not self.saut_possible and self.fx_controle != self.niveau.jump_force and self.fx_controle != -self.niveau.jump_force and self.fy_controle != self.niveau.jump_force and self.fy_controle != -self.niveau.jump_force:
             self.fx_controle = 0
             self.fy_controle = 0
 
     def chute_libre_regulee(self):
         """ajuste la force de deplacement en fonction de l etat de chute libre ou non"""
         if self.saut_possible:
-            self.niveau.move_force = move_force
+            self.niveau.move_force = self.niveau.menu.move_force
         else:
-            self.niveau.move_force = move_force / 10
+            self.niveau.move_force = self.niveau.menu.move_force / 10
 
 
 if __name__ == "__main__":
