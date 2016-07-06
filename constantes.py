@@ -29,6 +29,7 @@ chemin_icone = "images/icone.png"
 
 # Image du fond
 chemin_menu = "images/menu.png"
+chemin_win = "images/win.png"
 
 # Images des boutons
 chemin_vitesse =  "images/vitesse.png"
@@ -78,8 +79,9 @@ chemin_niveau4 = "niveaux/4"
 chemin_niveau5 = "niveaux/5"
 chemin_niveau6 = "niveaux/6"
 chemin_niveau7 = "niveaux/7"
+chemin_niveau8 = "niveaux/8"
 
-chemins_niveaux = [chemin_niveau1, chemin_niveau2, chemin_niveau3, chemin_niveau4, chemin_niveau5, chemin_niveau6, chemin_niveau7]
+chemins_niveaux = [chemin_niveau1, chemin_niveau2, chemin_niveau3, chemin_niveau4, chemin_niveau5, chemin_niveau6, chemin_niveau7, chemin_niveau8]
 
 
 
@@ -87,6 +89,7 @@ chemins_niveaux = [chemin_niveau1, chemin_niveau2, chemin_niveau3, chemin_niveau
 
 # Image de fond du niveau
 chemin_background = "images/background.png"
+chemin_game_over = "images/game_over.png"
 
 # Images du personnage
 chemin_perso0 = "images/perso0.png"
@@ -111,11 +114,11 @@ liste_blocs = ["b", "e", "s", "u", "d", "l", "r", "k", "p"]
 
 
 
+### a trier
 
 
 
-
-coeur = "images/coeur.png"
+chemin_coeur = "images/coeur.png"
 pos_coeur1 = (1000, 0)
 pos_coeur2 = (1050, 0)
 pos_coeur3 = (1100, 0)

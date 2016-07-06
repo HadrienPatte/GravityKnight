@@ -16,6 +16,7 @@ class Menu:
     def charger_images(self):
         "charge les images"
         self.img = pygame.image.load(chemin_menu).convert_alpha()
+        self.img_win = pygame.image.load(chemin_win).convert_alpha()
         self.img_vitesse = pygame.image.load(chemin_vitesse).convert_alpha()
         self.img_vitesse1 = pygame.image.load(chemin_vitesse1).convert_alpha()
         self.img_force = pygame.image.load(chemin_force).convert_alpha()
@@ -71,9 +72,15 @@ class Menu:
                 self.f_fluide = mode_vitesse_f_fluide
 
                 self.premier_lancement = False
-                self.creer_niveau()
-                self.niveau.afficher()
-                self.niveau.boucle_principale()
+                if self.next_niveau == len(chemins_niveaux) + 1:
+                    pygame.display.get_surface().blit(self.img_win, (0, 0))
+                    pygame.display.flip()
+                    pygame.time.Clock().tick(1)
+                    self.on = 0
+                else:
+                    self.creer_niveau()
+                    self.niveau.afficher()
+                    self.niveau.boucle_principale()
 
             elif event.type == MOUSEBUTTONDOWN and event.button == 1 and event.pos[1] <= bouton2_bas and event.pos[1] >= bouton2_haut and  event.pos[0] <= bouton2_droite and event.pos[0] >= bouton2_gauche :
                 self.mode = 'force'
@@ -88,12 +95,17 @@ class Menu:
 
                 self.f_solide = mode_force_f_solide
                 self.f_fluide = mode_force_f_fluide
-                print(self.mode)
 
                 self.premier_lancement = False
-                self.creer_niveau()
-                self.niveau.afficher()
-                self.niveau.boucle_principale()
+                if self.next_niveau == len(chemins_niveaux) + 1:
+                    pygame.display.get_surface().blit(self.img_win, (0, 0))
+                    pygame.display.flip()
+                    pygame.time.Clock().tick(1)
+                    self.on = 0
+                else:
+                    self.creer_niveau()
+                    self.niveau.afficher()
+                    self.niveau.boucle_principale()
 
 
             elif event.type == MOUSEBUTTONDOWN and event.button == 1 and event.pos[1] <= bouton3_bas and event.pos[1] >= bouton3_haut and  event.pos[0] <= bouton3_droite and event.pos[0] >= bouton3_gauche :
@@ -109,9 +121,15 @@ class Menu:
                 self.f_fluide = mode_vitesse_f_fluide
 
                 self.premier_lancement = False
-                self.creer_niveau()
-                self.niveau.afficher()
-                self.niveau.boucle_principale()
+                if self.next_niveau == len(chemins_niveaux) + 1:
+                    pygame.display.get_surface().blit(self.img_win, (0, 0))
+                    pygame.display.flip()
+                    pygame.time.Clock().tick(1)
+                    self.on = 0
+                else:
+                    self.creer_niveau()
+                    self.niveau.afficher()
+                    self.niveau.boucle_principale()
 
 
             elif posSouris[1] <= bouton2_bas and posSouris[1] >= bouton2_haut and  posSouris[0] <= bouton1_droite and posSouris[0] >= bouton1_gauche :
@@ -141,9 +159,15 @@ class Menu:
                 self.boucle_evenement()
             else:
                 pygame.display.set_caption(titre_fenetre + " - Niveau {0}".format(self.next_niveau))
-                self.creer_niveau()
-                self.niveau.afficher()
-                self.niveau.boucle_principale()
+                if self.next_niveau == len(chemins_niveaux) + 1:
+                    pygame.display.get_surface().blit(self.img_win, (0, 0))
+                    pygame.display.flip()
+                    pygame.time.Clock().tick(1)
+                    self.on = 0
+                else:
+                    self.creer_niveau()
+                    self.niveau.afficher()
+                    self.niveau.boucle_principale()
 
 
 if __name__ == "__main__":

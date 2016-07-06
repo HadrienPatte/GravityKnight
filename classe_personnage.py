@@ -118,6 +118,8 @@ class Personnage:
 
     def contact_bloc(self):
         "LA fonction de contact! repositionne le personnage la ou il faut si il est dans un bloc"
+        if self.niveau.menu.mode == "force":
+            self.saut_possible = False
         self.liste_coins = self.generer_liste_coins()
         L=[]
         for i in range(len(self.liste_coins)):
@@ -220,6 +222,9 @@ class Personnage:
             if self.est_dans_un_bloc("p"):
                 self.niveau.menu.vie -= 1
             if self.niveau.menu.vie == 0:
+                pygame.display.get_surface().blit(self.niveau.img_game_over, (0, 0))
+                pygame.display.flip()
+                pygame.time.Clock().tick(1)
                 self.niveau.on = 0
                 self.niveau.menu.on = 0
 

@@ -27,7 +27,8 @@ class Niveau:
 
     def charger_images(self):
         "charge les differentes images du niveau"
-        self.img_coeur = pygame.image.load(coeur).convert_alpha()
+        self.img_coeur = pygame.image.load(chemin_coeur).convert_alpha()
+        self.img_game_over = pygame.image.load(chemin_game_over).convert_alpha()
         self.img_background = pygame.image.load(chemin_background).convert_alpha()
         self.img_entree = pygame.image.load(chemin_entree).convert_alpha()
         self.img_sortie = pygame.image.load(chemin_sortie).convert_alpha()
@@ -208,6 +209,8 @@ class Niveau:
             elif event.type == KEYDOWN and event.key == K_ESCAPE:
                 if self.personnage.est_dans_un_bloc("e"):
                     self.menu.on = 0
+                if self.menu.mode == 'vies':
+                    self.menu.vie -= 1
                 self.on = 0
             else:
                 if self.menu.mode == 'force':
@@ -218,7 +221,10 @@ class Niveau:
     def boucle_principale(self):
         "appelle les differentes fonctions du module dans la boucle niveau"
         while self.on:
-            pygame.time.Clock().tick(70)
+            if self.menu.mode == 'force':
+                pygame.time.Clock().tick(100)
+            else:
+                pygame.time.Clock().tick(70)
             #self.personnage.masquer()
             #pygame.display.flip()
             self.boucle_evenement()
